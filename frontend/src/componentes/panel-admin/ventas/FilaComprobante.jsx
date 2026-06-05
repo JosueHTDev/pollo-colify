@@ -1,0 +1,113 @@
+import { FiFileText, FiEye, FiDownload, FiUser } from "react-icons/fi";
+
+export const FilaComprobante = ({ venta, onVerDetalle, onDescargarPDF }) => {
+  const getColorComprobante = () => {
+    if (venta.nombreTipoComprobante === "Factura" || venta.comprobante?.includes('F')) {
+      return {
+        bg: "bg-blue-100 dark:bg-blue-900/30",
+        text: "text-blue-600 dark:text-blue-400"
+      };
+    } else if (venta.nombreTipoComprobante === "Boleta" || venta.comprobante?.includes('B')) {
+      return {
+        bg: "bg-green-100 dark:bg-green-900/30", 
+        text: "text-green-600 dark:text-green-400"
+      };
+    } else {
+      return {
+        bg: "bg-gray-100 dark:bg-gray-900/30",
+        text: "text-gray-600 dark:text-gray-400"
+      };
+    }
+  };
+
+  const getColorMetodoPago = () => {
+    const metodo = venta.nombre_medio_pago?.toLowerCase() || venta.nombreMedioPago?.toLowerCase() || '';
+    if (metodo.includes('efectivo')) {
+      return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400";
+    } else if (metodo.includes('tarjeta')) {
+      return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400"; 
+    } else if (metodo.includes('transferencia')) {
+      return "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400";
+    } else if (metodo.includes('yape') || metodo.includes('plin')) {
+      return "bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-400";
+    }
+    return "bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400";
+  };
+
+  const colorComprobante = getColorComprobante();
+  const colorMetodoPago = getColorMetodoPago();
+
+  const totalVenta = venta.total_venta || venta.totalVenta || 0;
+  const nombreMedioPago = venta.nombre_medio_pago || venta.nombreMedioPago || '';
+  const fecha = venta.fecha || venta.fechaEmision || '';
+  const hora = venta.hora || '';
+  const nombreCliente = venta.nombreCliente || venta.denominacion_cliente || 'Cliente Varios';
+  const comprobante = venta.comprobante || `V${venta.id_venta}`;
+
+  return (
+    <tr className="hover:bg-gray-50 dark:hover:bg-gray-700">
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="flex items-center gap-3">
+          <div className={`p-2 rounded-lg ${colorComprobante.bg} ${colorComprobante.text}`}>
+            <FiFileText size={16} />
+          </div>
+          <div>
+            <div className="text-sm font-medium text-gray-900 dark:text-white">
+              {comprobante}
+            </div>
+          </div>
+        </div>
+      </td>
+
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-gray-100 dark:bg-gray-900/30 text-gray-600 dark:text-gray-400">
+            <FiUser size={16} />
+          </div>
+          <div className="max-w-40 overflow-hidden text-ellipsis whitespace-nowrap">
+            <div className="text-sm font-medium text-gray-900 dark:text-white">
+              {nombreCliente}
+            </div>
+          </div>
+        </div>
+      </td>
+      
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="text-xs text-gray-500 dark:text-gray-400">
+          S/ {parseFloat(totalVenta).toFixed(2)}  
+        </div>
+        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${colorMetodoPago}`}>
+          {nombreMedioPago}
+        </span>
+      </td>
+
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="text-sm text-gray-900 dark:text-white">
+          {fecha}
+        </div>
+        <div className="text-xs text-gray-500 dark:text-gray-400">
+          {hora}
+        </div>
+      </td>
+
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="flex items-center gap-2">
+          <button 
+            onClick={() => onVerDetalle(venta)}
+            className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors cursor-pointer"
+            title="Ver detalle"
+          >
+            <FiEye size={16} />
+          </button>
+          <button 
+            onClick={() => onDescargarPDF(venta)}
+            className="p-2 rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50 transition-colors cursor-pointer"
+            title="Descargar comprobante"
+          >
+            <FiDownload size={16} />
+          </button>
+        </div>
+      </td>
+    </tr>
+  );
+};

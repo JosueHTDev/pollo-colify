@@ -1,0 +1,32 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 5342
+          envs: BACKEND_ENV,FRONTEND_ENV
+          command_timeout: 30m
+          script: |
+            cd /opt/miapp
+            git pull origin main
+            echo "$BACKEND_ENV" > ./backend/.env
+            echo "$FRONTEND_ENV" > ./frontend/.env
+            docker exec -i mysql_db mysql -uroot -p8519 super_pollo_hyo < ./database/sp.sql
+            docker exec -i mysql_db mysql -uroot -p8519 super_pollo_hyo < ./database/sp_nuevos.sql
+            docker compose up --build -d
+        env:
+          BACKEND_ENV: ${{ secrets.BACKEND_ENV }}
+          FRONTEND_ENV: ${{ secrets.FRONTEND_ENV }}
