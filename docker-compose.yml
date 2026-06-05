@@ -1,10 +1,8 @@
 version: '3.8'
 
-services:
+sservices:
   backend:
-    # Le dice al constructor: "Ve a la caja ./backend y arma la cocina"
     build: ./backend
-    container_name: backend_app
     restart: always
     ports:
       - "3001:3001"
@@ -14,9 +12,7 @@ services:
       - appnet
 
   frontend:
-    # Le dice al constructor: "Ve a la caja ./frontend y arma el comedor"
     build: ./frontend
-    container_name: frontend_app
     restart: always
     networks:
       - appnet
