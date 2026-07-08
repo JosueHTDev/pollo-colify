@@ -38,12 +38,7 @@ const authLimiter = rateLimit({
   }
 });
 
-
-const corsOptions = {
-  origin: [process.env.CLIENT_URL, 'https://superpollohyo.com', 'https://www.superpollohyo.com'],
-  credentials: true,
-};
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
