@@ -38,7 +38,12 @@ const authLimiter = rateLimit({
   }
 });
 
-app.use(cors());
+
+const corsOptions = {
+  origin: [process.env.CLIENT_URL, 'https://pollo-colify-git-frontend-pyauri-528473450808.europe-west1.run.app'],
+  credentials: true,
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
