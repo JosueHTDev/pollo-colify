@@ -1,5 +1,5 @@
 import axios from "axios";
-const apiUrl = import.meta.env.VITE_BACKEND_URL; 
+const apiUrl = "https://pollo-colify-git-backend-pyauri-528473450808.europe-west1.run.app/api"; 
 
 export const obtenerProductosServicio = async () => {
   try {
