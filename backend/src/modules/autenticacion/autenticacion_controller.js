@@ -16,7 +16,7 @@ const registroUsuarioController = async (req, res) => {
     const cookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'Strict',
+      sameSite: 'None',
       maxAge: 20 * 60 * 60 * 1000
     };
 
@@ -81,7 +81,7 @@ const iniciarSesionUsuarioController = async (req, res) => {
     const cookieOptions = {
       httpOnly: true, 
       secure: process.env.NODE_ENV === 'production', 
-      sameSite: 'Strict', 
+      sameSite: 'None', 
       maxAge: 20 * 60 * 60 * 1000 
     };
 
@@ -144,7 +144,7 @@ const cerrarSesionController = async (req, res) => {
         res.clearCookie('refreshToken', {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'Strict',
+            sameSite: 'None',
         });
         return res.status(200).json({ ok: true, mensaje: 'Sesión cerrada correctamente' });
     } catch (err) {

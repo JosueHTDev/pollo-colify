@@ -3,10 +3,20 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
+
+ARG VITE_BACKEND_URL
+ARG VITE_PUBLIC_KEY_MERCADOPAGO
+ARG VITE_TOKEN_APIS_PERU
+ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
+ENV VITE_PUBLIC_KEY_MERCADOPAGO=$VITE_PUBLIC_KEY_MERCADOPAGO
+ENV VITE_TOKEN_APIS_PERU=$VITE_TOKEN_APIS_PERU
+
 RUN npm run build
 
-FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
-COPY nginx/default.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+FROM node:22-alpine
+WORKDIR /app
+RUN npm install -g serve
+COPY --from=build /app/dist ./dist
+ENV PORT=8080
+EXPOSE 8080
+CMD ["sh", "-c", "serve -s dist -l ${PORT}"]
