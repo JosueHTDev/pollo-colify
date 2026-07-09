@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useAutenticacionStore } from '../store/useAutenticacionStore';
 
 const API = axios.create({
-  baseURL: "https://pollo-colify-git-backend-pyauri-528473450808.europe-west1.run.app/api",
+  baseURL: "https://proyecto-backend-jh-528473450808.europe-west1.run.app/api",
   withCredentials: true,
 });
 

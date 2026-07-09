@@ -1,5 +1,5 @@
 import axios from "axios";
-const apiUrl = "https://pollo-colify-git-backend-pyauri-528473450808.europe-west1.run.app/api"; 
+const apiUrl = "https://proyecto-backend-jh-528473450808.europe-west1.run.app/api"; 
 
 export const obtenerProductosServicio = async () => {
   try {
